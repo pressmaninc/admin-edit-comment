@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Admin Edit Comment
  * Description: Adding an extra comment functionality in post screen exclusively for your editorial team.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: PRESSMAN
  * Author URI: https://www.pressman.ne.jp/
  * License: GNU GPL v2 or higher
@@ -64,6 +64,14 @@ class Admin_Edit_Comment {
 		add_action( 'admin_head', [ $this, 'add_comment_box' ] );
 		add_action( 'wp_ajax_aec_insert_comment', [ $this, 'insert_comment' ] );
 		add_action( 'wp_ajax_aec_delete_comment', [ $this, 'delete_comment' ] );
+		add_action( 'plugins_loaded', [ $this, 'load_text_domain' ] );
+	}
+
+	/**
+	 * Loads translated strings.
+	 */
+	public function load_text_domain() {
+		load_plugin_textdomain( 'admin-edit-comment', false, plugin_basename( plugin_dir_path( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
@@ -95,7 +103,17 @@ class Admin_Edit_Comment {
 		add_meta_box( 'admin_edit_comment', 'Admin Edit Comment', [ $this, 'add_meta_box' ], $active_post_types, 'side' );
 		wp_enqueue_style( 'aec_edit.css', plugin_dir_url( __FILE__ ) . 'assets/css/edit.css', [], $this->version );
 		wp_enqueue_script( 'aec_edit.js', plugin_dir_url( __FILE__ ) . 'assets/js/edit.js', [ 'jquery' ], $this->version, true );
-		wp_localize_script( 'aec_edit.js', 'aec_ajax_url', [ 'url' => admin_url( 'admin-ajax.php' ) ] );
+		wp_localize_script(
+			'aec_edit.js',
+			'localize',
+			[
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'delete_failed_msg'  => __( 'Delete failed.', 'admin-edit-comment' ),
+				'update_failed_msg'  => __( 'Update failed.', 'admin-edit-comment' ),
+				'comments_limit_msg' => __( 'The number of comments exceeds the limit.', 'admin-edit-comment' ),
+				'no_empty_msg'       => __( 'No empty.', 'admin-edit-comment' ),
+			]
+		);
 	}
 
 	/**
@@ -132,7 +150,7 @@ class Admin_Edit_Comment {
 		] ) );
 
 		if ( ! $comments ) {
-			return 'No comments yet.';
+			return __( 'No comments yet.', 'admin-edit-comment' );
 		}
 
 		$limit           = ( count( $comments ) >= apply_filters( 'aec_limit_per_post', 20 ) ) ? 'exceeds' : '';
@@ -177,7 +195,7 @@ HTML;
 		$post_id = filter_input( INPUT_POST, 'post_id' );
 		$comment = filter_input( INPUT_POST, 'comment' );
 		if ( ! $post_id || ! $comment ) {
-			wp_send_json_error( [ 'message' => 'Oops! Failed to get necessary parameter.' ] );
+			wp_send_json_error( [ 'message' => __( 'Oops! Failed to get necessary parameter.', 'admin-edit-comment' ) ] );
 		}
 
 		$user = wp_get_current_user();
@@ -188,7 +206,7 @@ HTML;
 			'post_parent'  => $post_id,
 			'post_type'    => self::POST_TYPE_NAME,
 		] ) ) ) {
-			wp_send_json_error( [ 'message' => 'Insert comment refused.' ] );
+			wp_send_json_error( [ 'message' => __( 'Insert comment refused.', 'admin-edit-comment' ) ] );
 		}
 
 		/**
@@ -212,11 +230,11 @@ HTML;
 		$post_id         = filter_input( INPUT_POST, 'post_id' );
 		$comment_post_id = filter_input( INPUT_POST, 'comment_id' );
 		if ( ! $post_id || ! $comment_post_id ) {
-			wp_send_json_error( [ 'message' => 'WTH! Failed to get necessary parameter.' ] );
+			wp_send_json_error( [ 'message' => __( 'WTH! Failed to get necessary parameter.', 'admin-edit-comment' ) ] );
 		}
 
 		if ( ! wp_delete_post( $comment_post_id, true ) ) {
-			wp_send_json_error( [ 'message' => 'Failed to delete comment.' ] );
+			wp_send_json_error( [ 'message' => __( 'Failed to delete comment.', 'admin-edit-comment' ) ] );
 		}
 
 		wp_send_json_success( [ 'comments' => $this->get_content_html( $post_id ) ] );

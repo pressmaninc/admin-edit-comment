@@ -2,7 +2,7 @@
 Contributors: pressmaninc,naotoshigenari,kazunao,hiroshisekiguchi,pmyosuke,muraokashotaro
 Tags: pressman, comment, admin, edit, editor
 Requires at least: 4.9
-Tested up to: 4.9.8
+Tested up to: 5.0.3
 Requires PHP: 5.4.0
 Stable tag: 1.0.0
 License: GNU GPL v2 or higher
@@ -18,3 +18,6 @@ Adding an extra comment functionality in post screen exclusively for your editor
 == Changelog ==
 = 1.0.0 =
 first version.
+
+= 1.0.1 =
+Add translation file & Tested up to 5.0.3.

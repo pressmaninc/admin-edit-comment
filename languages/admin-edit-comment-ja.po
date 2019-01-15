@@ -1,0 +1,64 @@
+# Translation of Plugins - Admin Edit Comment - Development (trunk) in Japanese
+# This file is distributed under the same license as the Plugins - Admin Edit Comment - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: +0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: ja_JP\n"
+"Project-Id-Version: Plugins - Admin Edit Comment - Development (trunk)\n"
+
+#. Author URI of the plugin
+msgid "https://www.pressman.ne.jp/"
+msgstr ""
+
+#. Author of the plugin
+msgid "PRESSMAN"
+msgstr ""
+
+#. Description of the plugin
+msgid "Adding an extra comment functionality in post screen exclusively for your editorial team."
+msgstr "編集者用のコメントボックスを編集画面に表示します。"
+
+#. Plugin Name of the plugin
+msgid "Admin Edit Comment"
+msgstr ""
+
+#. admin-edit-comment.php:106
+msgid "Delete failed."
+msgstr "削除ができませんでした。"
+
+#. admin-edit-comment.php:107
+msgid "Update failed."
+msgstr "登録ができませんでした。"
+
+#. admin-edit-comment.php:108
+msgid "The number of comments exceeds the limit."
+msgstr "コメント数が上限に達しています。"
+
+#. admin-edit-comment.php:109
+msgid "No empty."
+msgstr "コメントが未入力です。"
+
+#. admin-edit-comment.php:138
+msgid "No comments yet."
+msgstr "コメントがありません。"
+
+#. admin-edit-comment.php:183
+msgid "Oops! Failed to get necessary parameter."
+msgstr "登録に必要なパラメータが取得できませんでした。"
+
+#. admin-edit-comment.php:194
+msgid "Insert comment refused."
+msgstr "コメントの登録に失敗しました。"
+
+#. admin-edit-comment.php:218
+msgid "WTH! Failed to get necessary parameter."
+msgstr "削除に必要なパラメータが取得できませんでした。"
+
+#. admin-edit-comment.php:222
+msgid "Failed to delete comment."
+msgstr "コメントの削除に失敗しました。"

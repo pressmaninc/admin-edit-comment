@@ -1,5 +1,6 @@
+/*global localize */
 jQuery(function ($) {
-	var ajax_url = aec_ajax_url.url;
+	var ajax_url = localize.ajax_url;
 
 	// Insert comment.
 	$(document).on('click', 'input[name="aec_submit"]', function () {
@@ -40,13 +41,13 @@ jQuery(function ($) {
 		$message.remove();
 
 		if ($text.val() === '') {
-			notice('No empty.', 'error');
+			notice(localize.no_empty_msg, 'error');
 			$submit.prop("disabled", false);
 			return false;
 		}
 
 		if (limit === 'exceeds') {
-			notice('The number of comments exceeds the limit.', 'error');
+			notice(localize.comments_limit_msg, 'error');
 			$submit.prop("disabled", false);
 			return false;
 		}
@@ -70,7 +71,7 @@ jQuery(function ($) {
 			}
 			$submit.prop("disabled", false);
 		}).fail(function () {
-			notice('Update failed', 'error');
+			notice(localize.update_failed_msg, 'error');
 			$submit.prop("disabled", false);
 		});
 	}
@@ -105,7 +106,7 @@ jQuery(function ($) {
 				notice(res.data.message, 'error');
 			}
 		}).fail(function () {
-			notice('Delete failed', 'error');
+			notice(localize.delete_failed_msg, 'error');
 		});
 	}
 
