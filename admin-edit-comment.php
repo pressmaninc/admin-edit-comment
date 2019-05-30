@@ -25,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Admin_Edit_Comment {
 
-	const POST_TYPE_NAME = 'admin_edit_comment';
+	const POST_TYPE_NAME             = 'admin_edit_comment';
+	const ADMIN_EDIT_COMMENT_OPTIONS = 'admin_edit_comment_options';
 
 	/**
 	 * Version of this plugin.
@@ -58,6 +59,12 @@ class Admin_Edit_Comment {
 	 * Admin_Edit_Comment constructor.
 	 */
 	public function __construct() {
+
+		require_once plugin_dir_path( __FILE__ ) . 'admin/admin.php';
+
+		register_activation_hook( __FILE__, [ $this, 'activate' ] );
+		register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
+
 		$plugin_data   = get_file_data( __FILE__, [ 'version' => 'Version' ] );
 		$this->version = $plugin_data['version'];
 		add_action( 'init', [ $this, 'register_post_type' ] );
@@ -65,6 +72,17 @@ class Admin_Edit_Comment {
 		add_action( 'wp_ajax_aec_insert_comment', [ $this, 'insert_comment' ] );
 		add_action( 'wp_ajax_aec_delete_comment', [ $this, 'delete_comment' ] );
 		add_action( 'plugins_loaded', [ $this, 'load_text_domain' ] );
+	}
+
+	public function activate() {
+
+		if ( ! get_option( self::ADMIN_EDIT_COMMENT_OPTIONS ) ) {
+			add_option( self::ADMIN_EDIT_COMMENT_OPTIONS, [ 'post', 'page' ] );
+		}
+	}
+
+	public function deactivate() {
+		delete_option( self::ADMIN_EDIT_COMMENT_OPTIONS );
 	}
 
 	/**
@@ -95,7 +113,7 @@ class Admin_Edit_Comment {
 	 */
 	public function add_comment_box() {
 		$screen            = get_current_screen();
-		$active_post_types = apply_filters( 'aec_activate_post_types', [ 'post', 'page' ] );
+		$active_post_types = apply_filters( 'aec_activate_post_types', get_option( self::ADMIN_EDIT_COMMENT_OPTIONS ) );
 		if ( $screen->base !== 'post' || ! in_array( $screen->post_type, $active_post_types ) ) {
 			return;
 		}
