@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Admin Edit Comment
  * Description: Adding an extra comment functionality in post screen exclusively for your editorial team.
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: PRESSMAN
  * Author URI: https://www.pressman.ne.jp/
  * License: GNU GPL v2 or higher
