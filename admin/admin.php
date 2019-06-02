@@ -24,11 +24,13 @@ class Admin_Edit_Comment_Settings_Page {
 		<div class="wrap">
 			<h1>Admin Edit Comment</h1>
 			<form method="POST" action="options.php">
-				<span style="font-weight: bold;"><?php esc_html_e( 'Customization: ', 'admin-edit-comment' ); ?></span><br>
-				<span style=""><?php esc_html_e( 'You can override the setting below by using a filter hook named \'aec_active_post_types\'.', 'admin-edit-comment' ); ?></span>
 				<?php
 				settings_fields( 'admin-edit-comment' );
 				do_settings_sections( 'admin-edit-comment' );
+				?>
+				<span style="font-weight: bold;"><?php esc_html_e( 'Customization: ', 'admin-edit-comment' ); ?></span>
+				<span><?php esc_html_e( 'You can override the setting above by using a filter hook named \'aec_active_post_types\'.', 'admin-edit-comment' ); ?></span>
+				<?php
 				submit_button();
 				?>
 			</form>
