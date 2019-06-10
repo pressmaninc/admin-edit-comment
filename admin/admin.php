@@ -59,7 +59,7 @@ class Admin_Edit_Comment_Settings_Page {
 
 	public function field_callback( $field ) {
 		$post_types = get_post_types( [ 'show_ui' => true ], 'objects' );
-		$options    = get_option( Admin_Edit_Comment::ADMIN_EDIT_COMMENT_OPTIONS );
+		$options    = get_option( Admin_Edit_Comment::ADMIN_EDIT_COMMENT_OPTIONS, Admin_Edit_Comment::DEFAULT_ACTIVE_POST_TYPE );
 
 		foreach ( $post_types as $post_type ) {
 			if ( Admin_Edit_Comment::POST_TYPE_NAME === $post_type->name || 'attachment' === $post_type->name ) {

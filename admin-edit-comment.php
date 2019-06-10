@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Admin Edit Comment
  * Description: Adding an extra comment functionality in post screen exclusively for your editorial team.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: PRESSMAN
  * Author URI: https://www.pressman.ne.jp/
  * License: GNU GPL v2 or higher
@@ -27,6 +27,11 @@ class Admin_Edit_Comment {
 
 	const POST_TYPE_NAME             = 'admin_edit_comment';
 	const ADMIN_EDIT_COMMENT_OPTIONS = 'admin_edit_comment_options';
+
+	/**
+	 * This plugin is enabled by default on 'post' and 'page'.
+	 */
+	const DEFAULT_ACTIVE_POST_TYPE = [ 'post', 'page' ];
 
 	/**
 	 * Version of this plugin.
@@ -62,8 +67,7 @@ class Admin_Edit_Comment {
 
 		require_once plugin_dir_path( __FILE__ ) . 'admin/admin.php';
 
-		register_activation_hook( __FILE__, [ $this, 'activate' ] );
-		register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
+		register_uninstall_hook( __FILE__, 'aec_uninstall' );
 
 		$plugin_data   = get_file_data( __FILE__, [ 'version' => 'Version' ] );
 		$this->version = $plugin_data['version'];
@@ -72,17 +76,6 @@ class Admin_Edit_Comment {
 		add_action( 'wp_ajax_aec_insert_comment', [ $this, 'insert_comment' ] );
 		add_action( 'wp_ajax_aec_delete_comment', [ $this, 'delete_comment' ] );
 		add_action( 'plugins_loaded', [ $this, 'load_text_domain' ] );
-	}
-
-	public function activate() {
-
-		if ( ! get_option( self::ADMIN_EDIT_COMMENT_OPTIONS ) ) {
-			add_option( self::ADMIN_EDIT_COMMENT_OPTIONS, [ 'post', 'page' ] );
-		}
-	}
-
-	public function deactivate() {
-		delete_option( self::ADMIN_EDIT_COMMENT_OPTIONS );
 	}
 
 	/**
@@ -113,7 +106,7 @@ class Admin_Edit_Comment {
 	 */
 	public function add_comment_box() {
 		$screen            = get_current_screen();
-		$active_post_types = apply_filters( 'aec_activate_post_types', get_option( self::ADMIN_EDIT_COMMENT_OPTIONS ) );
+		$active_post_types = apply_filters( 'aec_activate_post_types', get_option( self::ADMIN_EDIT_COMMENT_OPTIONS, self::DEFAULT_ACTIVE_POST_TYPE ) );
 		if ( $screen->base !== 'post' || ! in_array( $screen->post_type, $active_post_types ) ) {
 			return;
 		}
@@ -260,3 +253,19 @@ HTML;
 }
 
 Admin_Edit_Comment::instance();
+
+/**
+ * Uninstalls Admin Edit Comment.
+ */
+function aec_uninstall() {
+	if ( is_multisite() ) {
+		$sites = get_sites();
+		foreach ( $sites as $site ) {
+			switch_to_blog( $site->blog_id );
+			delete_option( Admin_Edit_Comment::ADMIN_EDIT_COMMENT_OPTIONS );
+			restore_current_blog();
+		}
+	} else {
+		delete_option( Admin_Edit_Comment::ADMIN_EDIT_COMMENT_OPTIONS );
+	}
+}

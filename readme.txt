@@ -16,8 +16,13 @@ Adding an extra comment functionality in post screen exclusively for your editor
 2. Activate the plugin through the Plugins menu in WordPress.
 
 == Changelog ==
+= 1.2.0 =
+Fix deactivation action. Thanks to Jevgenijs Cernihovics.
+Add Uninstallation action.
+Support multisite.
+
 = 1.1.0 =
-Add option page.
+Add option page. & Tested up to 5.2.1.
 
 = 1.0.1 =
 Add translation file & Tested up to 5.0.3.
